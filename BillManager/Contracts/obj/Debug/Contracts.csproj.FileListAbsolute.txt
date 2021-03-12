@@ -1,0 +1,6 @@
+C:\Dev\BillManager\BillManager\Contracts\bin\Debug\Contracts.dll
+C:\Dev\BillManager\BillManager\Contracts\bin\Debug\Contracts.pdb
+C:\Dev\BillManager\BillManager\Contracts\obj\Debug\Contracts.csprojAssemblyReference.cache
+C:\Dev\BillManager\BillManager\Contracts\obj\Debug\Contracts.csproj.CoreCompileInputs.cache
+C:\Dev\BillManager\BillManager\Contracts\obj\Debug\Contracts.dll
+C:\Dev\BillManager\BillManager\Contracts\obj\Debug\Contracts.pdb

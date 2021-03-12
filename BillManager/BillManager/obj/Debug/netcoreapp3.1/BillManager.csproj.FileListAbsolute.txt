@@ -78,3 +78,5 @@ C:\Dev\BillManager\BillManager\BillManager\bin\Debug\netcoreapp3.1\Swashbuckle.A
 C:\Dev\BillManager\BillManager\BillManager\obj\Debug\netcoreapp3.1\BillManager.csproj.CoreCompileInputs.cache
 C:\Dev\BillManager\BillManager\BillManager\obj\Debug\netcoreapp3.1\BillManager.MvcApplicationPartsAssemblyInfo.cs
 C:\Dev\BillManager\BillManager\BillManager\obj\Debug\netcoreapp3.1\BillManager.MvcApplicationPartsAssemblyInfo.cache
+C:\Dev\BillManager\BillManager\BillManager\bin\Debug\netcoreapp3.1\Contracts.dll
+C:\Dev\BillManager\BillManager\BillManager\bin\Debug\netcoreapp3.1\Contracts.pdb

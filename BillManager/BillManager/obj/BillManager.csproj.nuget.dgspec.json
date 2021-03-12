@@ -29,7 +29,11 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Dev\\BillManager\\BillManager\\Contracts\\Contracts.csproj": {
+                "projectPath": "C:\\Dev\\BillManager\\BillManager\\Contracts\\Contracts.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -86,6 +90,16 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.407\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "C:\\Dev\\BillManager\\BillManager\\Contracts\\Contracts.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\BillManager\\BillManager\\Contracts\\Contracts.csproj",
+        "projectName": "Contracts",
+        "projectPath": "C:\\Dev\\BillManager\\BillManager\\Contracts\\Contracts.csproj"
+      },
+      "frameworks": {
+        "net472": {}
       }
     }
   }
