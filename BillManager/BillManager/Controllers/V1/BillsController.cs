@@ -1,4 +1,5 @@
-﻿using Contracts.Domain;
+﻿using Contracts.Contracts;
+using Contracts.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -16,7 +17,7 @@ namespace BillManager.Controllers
 			};
 		}
 
-		[HttpGet("api/v1/bills")]
+		[HttpGet(ApiRoutes.Bills.GetBills)]
 		public IActionResult GetBills()
 		{
 			return Ok(bills);
