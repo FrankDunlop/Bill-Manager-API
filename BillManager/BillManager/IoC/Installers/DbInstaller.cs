@@ -1,4 +1,5 @@
 ﻿using BillManager.Data;
+using BillManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,8 @@ namespace BillManager.Installers
 					configuration.GetConnectionString("DefaultConnection")));
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<DataContext>();
+
+			services.AddSingleton<IBillService, BillService>();
 		}
 	}
 }

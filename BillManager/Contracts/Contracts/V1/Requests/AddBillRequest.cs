@@ -1,8 +1,9 @@
-﻿namespace Contracts.Domain
+﻿namespace Contracts.Contracts.Requests
 {
-	public class Bill
+	public class AddBillRequest
 	{
 		public int Id { get; set; }
+
 		public string Name { get; set; }
 	}
 }
