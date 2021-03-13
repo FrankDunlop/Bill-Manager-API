@@ -25,6 +25,28 @@ namespace BillManager.Controllers
 			return Ok(_billService.GetBills());
 		}
 
+		[HttpGet(ApiRoutes.Bills.GetBillsByName)]
+		public IActionResult GetBillsByName([FromRoute] string name)
+		{
+			var bills = _billService.GetBills(name: name);
+
+			if (bills == null)
+				return NotFound();
+
+			return Ok(bills);
+		}
+
+		[HttpGet(ApiRoutes.Bills.GetBillsByVendor)]
+		public IActionResult GetBillsByVendor([FromRoute] string vendor)
+		{
+			var bills = _billService.GetBills(vendor: vendor);
+
+			if (bills == null)
+				return NotFound();
+
+			return Ok(bills);
+		}
+
 		[HttpGet(ApiRoutes.Bills.GetBill)]
 		public IActionResult GetBill([FromRoute] Guid billId)
 		{
@@ -37,23 +59,23 @@ namespace BillManager.Controllers
 		}
 
 		[HttpPost(ApiRoutes.Bills.AddBill)]
-		public IActionResult AddBill([FromBody] AddBillRequest billRequest)
+		public IActionResult AddBill([FromBody] AddBillRequest addRequest)
 		{
 			var bill = new Bill {
 				Id = Guid.NewGuid(),
-				Name = billRequest.Name,
-				Occurance = billRequest.Occurance,
-				Category = billRequest.Category,
-				BillDate = billRequest.BillDate,
-				PeriodFrom = billRequest.PeriodFrom,
-				PeriodTo = billRequest.PeriodTo,
-				Price = billRequest.Price,
-				IsPaid = billRequest.IsPaid,
-				PaidDate = billRequest.PaidDate,
-				Document = billRequest.Document
+				Name = addRequest.Name,
+				Occurance = addRequest.Occurance,
+				Category = addRequest.Category,
+				BillDate = addRequest.BillDate,
+				PeriodFrom = addRequest.PeriodFrom,
+				PeriodTo = addRequest.PeriodTo,
+				Price = addRequest.Price,
+				IsPaid = addRequest.IsPaid,
+				PaidDate = addRequest.PaidDate,
+				Document = addRequest.Document
 			};
 
-			_billService.GetBills().Add(bill);
+			_billService.GetBills().ToList().Add(bill);
 
 			var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
 			var locationUri = baseUrl + "/" + ApiRoutes.Bills.GetBill.Replace("{billId}", bill.Id.ToString());
@@ -63,12 +85,13 @@ namespace BillManager.Controllers
 		}
 
 		[HttpPut(ApiRoutes.Bills.UpdateBill)]
-		public IActionResult Update([FromRoute] Guid billId, [FromBody] UpdateBillRequest request)
+		public IActionResult Update([FromRoute] Guid billId, [FromBody] UpdateBillRequest updateRequest)
 		{
 			var bill = new Bill
 			{
 				Id = billId,
-				Name = request.Name
+				IsPaid = updateRequest.IsPaid,
+				PaidDate = updateRequest.PaidDate,
 			};
 
 			var updated = _billService.UpdateBill(bill);
@@ -88,6 +111,17 @@ namespace BillManager.Controllers
 				return NoContent();
 
 			return NotFound();
+		}
+
+		[HttpGet(ApiRoutes.Bills.GetBillDocument)]
+		public IActionResult GetBillDocument([FromRoute] Guid billId)
+		{
+			var document = _billService.GetBillDocument(billId);
+
+			if (document == null)
+				return NotFound();
+
+			return Ok(document);
 		}
 	}
 }

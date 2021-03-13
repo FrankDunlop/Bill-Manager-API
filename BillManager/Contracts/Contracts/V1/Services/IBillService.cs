@@ -6,12 +6,11 @@ namespace Contracts.Contracts
 {
 	public interface IBillService
 	{
-		List<Bill> GetBills();
-
+		IEnumerable<Bill> GetBills(string name = "", string vendor = "");
 		Bill GetBill(Guid billId);
-
 		bool UpdateBill(Bill billToUpdate);
-
 		bool DeleteBill(Guid billId);
+
+		byte[] GetBillDocument(Guid billId);
 	}
 }

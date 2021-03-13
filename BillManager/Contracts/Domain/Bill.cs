@@ -6,6 +6,7 @@ namespace Contracts.Domain
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
+		public string Vendor { get; set; }
 		public int Occurance { get; set; }
 		public int Category { get; set; }
 		public DateTime BillDate { get; set; }

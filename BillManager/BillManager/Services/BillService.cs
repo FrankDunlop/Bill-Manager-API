@@ -18,9 +18,19 @@ namespace BillManager.Services
 				new Bill{Id = Guid.NewGuid(), Name = "Phone"}
 			};
 		}
-		public List<Bill> GetBills()
+		public IEnumerable<Bill> GetBills(string name = "", string vendor = "")
 		{
-			return bills;
+			if (name.Equals(string.Empty) && vendor.Equals(string.Empty))
+				return bills;
+
+			if (!name.Equals(string.Empty))
+			{
+				return bills.Where(b => b.Name.Equals(name));
+			}
+			else
+			{
+				return bills.Where(b => b.Vendor.Equals(vendor));
+			}
 		}
 
 		public Bill GetBill(Guid billId)
@@ -36,7 +46,9 @@ namespace BillManager.Services
 				return false;
 
 			var index = bills.FindIndex(x => x.Id == billToUpdate.Id);
-			bills[index] = billToUpdate;
+			bills[index].IsPaid = billToUpdate.IsPaid;
+			bills[index].PaidDate = billToUpdate.PaidDate;
+
 			return true;
 		}
 
@@ -49,6 +61,11 @@ namespace BillManager.Services
 
 			bills.Remove(bill);
 			return true;
+		}
+
+		public byte[] GetBillDocument(Guid billId)
+		{
+			return bills.SingleOrDefault(x => x.Id == billId).Document;
 		}
 	}
 }
