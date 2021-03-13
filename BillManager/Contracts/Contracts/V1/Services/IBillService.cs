@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BillManager.Services
+namespace Contracts.Contracts
 {
 	public interface IBillService
 	{

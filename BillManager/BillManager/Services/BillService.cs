@@ -1,4 +1,5 @@
-﻿using Contracts.Domain;
+﻿using Contracts.Contracts;
+using Contracts.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
