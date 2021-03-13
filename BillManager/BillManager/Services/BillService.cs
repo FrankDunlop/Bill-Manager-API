@@ -2,6 +2,7 @@
 using Contracts.Domain;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,6 +67,21 @@ namespace BillManager.Services
 		public byte[] GetBillDocument(Guid billId)
 		{
 			return bills.SingleOrDefault(x => x.Id == billId).Document;
+		}
+
+		public void ConvertDoc()
+		{
+			string filename = "INSTRUCTIONS.txt";
+			List<byte[]> document = new List<byte[]>();
+			using (FileStream fileStream = File.Open(@"C:\Dev\" + filename, FileMode.Open))
+			{
+				var memoryStream = new MemoryStream();
+				memoryStream.SetLength(fileStream.Length);
+				fileStream.Read(memoryStream.GetBuffer(), 0, (int)fileStream.Length);
+				document.Add(memoryStream.ToArray());
+			}
+
+			File.WriteAllBytes(@"C:\Dev\" + filename + "1", document[0]);
 		}
 	}
 }

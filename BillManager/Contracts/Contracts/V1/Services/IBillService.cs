@@ -10,7 +10,7 @@ namespace Contracts.Contracts
 		Bill GetBill(Guid billId);
 		bool UpdateBill(Bill billToUpdate);
 		bool DeleteBill(Guid billId);
-
 		byte[] GetBillDocument(Guid billId);
+		void ConvertDoc();
 	}
 }
