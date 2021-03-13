@@ -1,4 +1,5 @@
 ﻿using Contracts.Domain;
+using System;
 using System.Collections.Generic;
 
 namespace BillManager.Services
@@ -7,10 +8,10 @@ namespace BillManager.Services
 	{
 		List<Bill> GetBills();
 
-		Bill GetBill(int billId);
+		Bill GetBill(Guid billId);
 
 		bool UpdateBill(Bill billToUpdate);
 
-		bool DeleteBill(int billId);
+		bool DeleteBill(Guid billId);
 	}
 }

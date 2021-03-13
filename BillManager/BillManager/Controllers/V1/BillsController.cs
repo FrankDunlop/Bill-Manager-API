@@ -4,6 +4,7 @@ using Contracts.Contracts.Requests;
 using Contracts.Contracts.Responses;
 using Contracts.Domain;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +26,7 @@ namespace BillManager.Controllers
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBill)]
-		public IActionResult GetBill([FromRoute] int billId)
+		public IActionResult GetBill([FromRoute] Guid billId)
 		{
 			var bill = _billService.GetBill(billId);
 
@@ -38,9 +39,18 @@ namespace BillManager.Controllers
 		[HttpPost(ApiRoutes.Bills.AddBill)]
 		public IActionResult AddBill([FromBody] AddBillRequest billRequest)
 		{
-			var bill = new Bill { 
-				Id = billRequest.Id,  
-				Name = billRequest.Name
+			var bill = new Bill {
+				Id = Guid.NewGuid(),
+				Name = billRequest.Name,
+				Occurance = billRequest.Occurance,
+				Category = billRequest.Category,
+				BillDate = billRequest.BillDate,
+				PeriodFrom = billRequest.PeriodFrom,
+				PeriodTo = billRequest.PeriodTo,
+				Price = billRequest.Price,
+				IsPaid = billRequest.IsPaid,
+				PaidDate = billRequest.PaidDate,
+				Document = billRequest.Document
 			};
 
 			_billService.GetBills().Add(bill);
@@ -53,7 +63,7 @@ namespace BillManager.Controllers
 		}
 
 		[HttpPut(ApiRoutes.Bills.UpdateBill)]
-		public IActionResult Update([FromRoute] int billId, [FromBody] UpdateBillRequest request)
+		public IActionResult Update([FromRoute] Guid billId, [FromBody] UpdateBillRequest request)
 		{
 			var bill = new Bill
 			{
@@ -70,7 +80,7 @@ namespace BillManager.Controllers
 		}
 
 		[HttpDelete(ApiRoutes.Bills.DeleteBill)]
-		public IActionResult Delete([FromRoute] int billId)
+		public IActionResult Delete([FromRoute] Guid billId)
 		{
 			var deleted = _billService.DeleteBill(billId);
 

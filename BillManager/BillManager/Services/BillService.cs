@@ -13,8 +13,8 @@ namespace BillManager.Services
 		public BillService()
 		{
 			bills = new List<Bill>(){
-				new Bill{Id = 1, Name = "Electric"},
-				new Bill{Id = 2, Name = "Phone"}
+				new Bill{Id = Guid.NewGuid(), Name = "Electric"},
+				new Bill{Id = Guid.NewGuid(), Name = "Phone"}
 			};
 		}
 		public List<Bill> GetBills()
@@ -22,7 +22,7 @@ namespace BillManager.Services
 			return bills;
 		}
 
-		public Bill GetBill(int billId)
+		public Bill GetBill(Guid billId)
 		{
 			return bills.SingleOrDefault(x => x.Id == billId);
 		}
@@ -39,7 +39,7 @@ namespace BillManager.Services
 			return true;
 		}
 
-		public bool DeleteBill(int billId)
+		public bool DeleteBill(Guid billId)
 		{
 			var bill = GetBill(billId);
 
