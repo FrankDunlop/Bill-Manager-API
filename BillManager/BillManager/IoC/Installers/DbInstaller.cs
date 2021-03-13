@@ -1,5 +1,6 @@
 ﻿using BillManager.Data;
 using BillManager.Services;
+using Contracts.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
