@@ -1,8 +1,10 @@
 ﻿using BillManager.Services;
 using Contracts.Contracts;
 using Contracts.Contracts.Requests;
+using Contracts.Contracts.Requests.Extensions;
 using Contracts.Contracts.Responses;
 using Contracts.Domain;
+using Contracts.Domain.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,14 @@ namespace BillManager.Controllers
 		[HttpGet(ApiRoutes.Bills.GetBills)]
 		public IActionResult GetBills()
 		{
-			return Ok(_billService.GetBills());
+			var bills = _billService.GetBills();
+
+			if (bills == null)
+				return NotFound();
+
+			var getBillResponse = bills.Select(bill => bill.ToBillResponse());
+
+			return Ok(getBillResponse);
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBillsByName)]
@@ -33,7 +42,7 @@ namespace BillManager.Controllers
 			if (bills == null)
 				return NotFound();
 
-			return Ok(bills);
+			return Ok(bills.Select(bill => bill.ToBillResponse()));
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBillsByVendor)]
@@ -44,7 +53,7 @@ namespace BillManager.Controllers
 			if (bills == null)
 				return NotFound();
 
-			return Ok(bills);
+			return Ok(bills.Select(bill => bill.ToBillResponse()));
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBill)]
@@ -55,49 +64,27 @@ namespace BillManager.Controllers
 			if (bill == null)
 				return NotFound();
 
-			return Ok(bill);
+			return Ok(bill.ToBillResponse());
 		}
 
 		[HttpPost(ApiRoutes.Bills.AddBill)]
 		public IActionResult AddBill([FromBody] AddBillRequest addRequest)
 		{
-			var bill = new Bill {
-				Id = Guid.NewGuid(),
-				Name = addRequest.Name,
-				Occurance = addRequest.Occurance,
-				Category = addRequest.Category,
-				BillDate = addRequest.BillDate,
-				PeriodFrom = addRequest.PeriodFrom,
-				PeriodTo = addRequest.PeriodTo,
-				Price = addRequest.Price,
-				IsPaid = addRequest.IsPaid,
-				PaidDate = addRequest.PaidDate,
-				Document = addRequest.Document
-			};
-
-			_billService.GetBills().ToList().Add(bill);
+			var bill = _billService.AddBill(addRequest.ToBill());
 
 			var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
 			var locationUri = baseUrl + "/" + ApiRoutes.Bills.GetBill.Replace("{billId}", bill.Id.ToString());
 
-			var response = new AddBillResponse { Id = bill.Id };
-			return Created(locationUri, response);
+			return Created(locationUri, bill.ToBillResponse());
 		}
 
 		[HttpPut(ApiRoutes.Bills.UpdateBill)]
 		public IActionResult Update([FromRoute] Guid billId, [FromBody] UpdateBillRequest updateRequest)
 		{
-			var bill = new Bill
-			{
-				Id = billId,
-				IsPaid = updateRequest.IsPaid,
-				PaidDate = updateRequest.PaidDate,
-			};
+			var bill = _billService.UpdateBill(billId, updateRequest.ToBill());
 
-			var updated = _billService.UpdateBill(bill);
-
-			if (updated)
-				return Ok(bill);
+			if (bill != null)
+				return Ok(bill.ToBillResponse());
 
 			return NotFound();
 		}

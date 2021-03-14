@@ -2,7 +2,7 @@
 
 namespace Contracts.Domain
 {
-	public class Bill
+	public class BillDto
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
@@ -18,6 +18,5 @@ namespace Contracts.Domain
 		public DateTime? PeriodFrom { get; set; }
 		public DateTime? PeriodTo { get; set; }
 		public double? Price { get; set; }
-		public string Notes { get; set; }
 	}
 }

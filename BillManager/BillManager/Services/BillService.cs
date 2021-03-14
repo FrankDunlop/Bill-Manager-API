@@ -1,5 +1,7 @@
 ﻿using Contracts.Contracts;
+using Contracts.Contracts.Requests;
 using Contracts.Domain;
+using Contracts.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,8 +17,8 @@ namespace BillManager.Services
 		public BillService()
 		{
 			bills = new List<Bill>(){
-				new Bill{Id = Guid.NewGuid(), Name = "Electric"},
-				new Bill{Id = Guid.NewGuid(), Name = "Phone"}
+				new Bill { Id = Guid.NewGuid(), Name = "Electric", Vendor = "Eirtricity" },
+				new Bill { Id = Guid.NewGuid(), Name = "Phone", Vendor = "Vodafone" }
 			};
 		}
 		public IEnumerable<Bill> GetBills(string name = "", string vendor = "")
@@ -36,21 +38,33 @@ namespace BillManager.Services
 
 		public Bill GetBill(Guid billId)
 		{
-			return bills.SingleOrDefault(x => x.Id == billId);
+			var bill = bills.SingleOrDefault(x => x.Id == billId);
+			return bill;
 		}
 
-		public bool UpdateBill(Bill billToUpdate)
+		public Bill AddBill(Bill bill)
 		{
-			var exists = GetBill(billToUpdate.Id) != null;
+			bills.Add(bill);
+
+			//will change bill domain object to billDto to save
+
+			return bill;
+		}
+
+		public Bill UpdateBill(Guid billId, Bill bill)
+		{
+			var exists = GetBill(billId) != null;
 
 			if (!exists)
-				return false;
+				return null;
 
-			var index = bills.FindIndex(x => x.Id == billToUpdate.Id);
-			bills[index].IsPaid = billToUpdate.IsPaid;
-			bills[index].PaidDate = billToUpdate.PaidDate;
+			//will change bill domain object to billDto to save
 
-			return true;
+			var index = bills.FindIndex(x => x.Id == billId);
+			bills[index].IsPaid = bill.IsPaid;
+			bills[index].PaidDate = bill.PaidDate;
+
+			return bills[index];
 		}
 
 		public bool DeleteBill(Guid billId)
@@ -60,7 +74,7 @@ namespace BillManager.Services
 			if (bill == null)
 				return false;
 
-			bills.Remove(bill);
+			bills.Remove(bills.SingleOrDefault(x => x.Id == billId));
 			return true;
 		}
 

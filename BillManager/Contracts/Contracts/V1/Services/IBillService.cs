@@ -1,4 +1,5 @@
-﻿using Contracts.Domain;
+﻿using Contracts.Contracts.Requests;
+using Contracts.Domain;
 using System;
 using System.Collections.Generic;
 
@@ -8,9 +9,11 @@ namespace Contracts.Contracts
 	{
 		IEnumerable<Bill> GetBills(string name = "", string vendor = "");
 		Bill GetBill(Guid billId);
-		bool UpdateBill(Bill billToUpdate);
+		Bill AddBill(Bill bill);
+		Bill UpdateBill(Guid billId, Bill bill);
 		bool DeleteBill(Guid billId);
 		byte[] GetBillDocument(Guid billId);
 		void ConvertDoc();
+		
 	}
 }

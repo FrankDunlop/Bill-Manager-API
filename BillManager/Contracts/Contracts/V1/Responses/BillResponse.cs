@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Contracts.Domain
+namespace Contracts.Contracts.Responses
 {
-	public class Bill
+	public class BillResponse
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
@@ -18,6 +18,5 @@ namespace Contracts.Domain
 		public DateTime? PeriodFrom { get; set; }
 		public DateTime? PeriodTo { get; set; }
 		public double? Price { get; set; }
-		public string Notes { get; set; }
 	}
 }

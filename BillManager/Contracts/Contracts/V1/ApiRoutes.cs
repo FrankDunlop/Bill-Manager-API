@@ -15,8 +15,8 @@ namespace Contracts.Contracts
 		public static class Bills
 		{
 			public const string GetBills = Base + "/bills";
-			public const string GetBillsByName = Base + "/bills/{Name}";
-			public const string GetBillsByVendor = Base + "/bills/{Vendor}";
+			public const string GetBillsByName = Base + "/bills/Name/{name}";
+			public const string GetBillsByVendor = Base + "/bills/Vendor/{vendor}";
 			public const string GetBill = Base + "/bills/{billId}";
 			public const string AddBill = Base + "/bills";
 			public const string UpdateBill = Base + "/bills/{billId}";

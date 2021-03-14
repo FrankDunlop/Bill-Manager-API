@@ -43,10 +43,14 @@
   <ItemGroup>
     <Compile Include="Contracts\V1\ApiRoutes.cs" />
     <Compile Include="Contracts\V1\Requests\AddBillRequest.cs" />
+    <Compile Include="Contracts\V1\Requests\Extensions\AddRequestExtensions.cs" />
+    <Compile Include="Contracts\V1\Requests\Extensions\UpdateRequestExtensions.cs" />
     <Compile Include="Contracts\V1\Requests\UpdateBillRequest.cs" />
-    <Compile Include="Contracts\V1\Responses\AddBillResponse.cs" />
+    <Compile Include="Contracts\V1\Responses\BillResponse.cs" />
+    <Compile Include="Domain\BillDto.cs" />
     <Compile Include="Contracts\V1\Services\IBillService.cs" />
     <Compile Include="Domain\Bill.cs" />
+    <Compile Include="Domain\Extensions\BillExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
