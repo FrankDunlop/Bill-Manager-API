@@ -19,7 +19,7 @@ namespace BillManager.Installers
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<DataContext>();
 
-			services.AddSingleton<IBillService, BillService>();
+			services.AddScoped<IBillService, BillService>();
 		}
 	}
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BillManager.Controllers
 {
@@ -22,22 +23,20 @@ namespace BillManager.Controllers
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBills)]
-		public IActionResult GetBills()
+		public async Task<IActionResult> GetBills()
 		{
-			var bills = _billService.GetBills();
+			var bills = await _billService.GetBillsAsync();
 
 			if (bills == null)
 				return NotFound();
 
-			var getBillResponse = bills.Select(bill => bill.ToBillResponse());
-
-			return Ok(getBillResponse);
+			return Ok(bills.Select(bill => bill.ToBillResponse()));
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBillsByName)]
-		public IActionResult GetBillsByName([FromRoute] string name)
+		public async Task<IActionResult> GetBillsByName([FromRoute] string name)
 		{
-			var bills = _billService.GetBills(name: name);
+			var bills = await _billService.GetBillsAsync(name: name);
 
 			if (bills == null)
 				return NotFound();
@@ -46,9 +45,9 @@ namespace BillManager.Controllers
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBillsByVendor)]
-		public IActionResult GetBillsByVendor([FromRoute] string vendor)
+		public async Task<IActionResult> GetBillsByVendor([FromRoute] string vendor)
 		{
-			var bills = _billService.GetBills(vendor: vendor);
+			var bills = await _billService.GetBillsAsync(vendor: vendor);
 
 			if (bills == null)
 				return NotFound();
@@ -57,9 +56,9 @@ namespace BillManager.Controllers
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBill)]
-		public IActionResult GetBill([FromRoute] Guid billId)
+		public async Task<IActionResult> GetBill([FromRoute] Guid billId)
 		{
-			var bill = _billService.GetBill(billId);
+			var bill = await _billService.GetBillAsync(billId);
 
 			if (bill == null)
 				return NotFound();
@@ -68,9 +67,13 @@ namespace BillManager.Controllers
 		}
 
 		[HttpPost(ApiRoutes.Bills.AddBill)]
-		public IActionResult AddBill([FromBody] AddBillRequest addRequest)
+		public async Task<IActionResult> AddBill([FromBody] AddBillRequest addRequest)
 		{
-			var bill = _billService.AddBill(addRequest.ToBill());
+			var bill = addRequest.ToBill();
+			var added = await _billService.AddBillAsync(addRequest.ToBill());
+
+			if (!added)
+				NotFound();
 
 			var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
 			var locationUri = baseUrl + "/" + ApiRoutes.Bills.GetBill.Replace("{billId}", bill.Id.ToString());
@@ -79,31 +82,32 @@ namespace BillManager.Controllers
 		}
 
 		[HttpPut(ApiRoutes.Bills.UpdateBill)]
-		public IActionResult Update([FromRoute] Guid billId, [FromBody] UpdateBillRequest updateRequest)
+		public async Task<IActionResult> Update([FromRoute] Guid billId, [FromBody] UpdateBillRequest updateRequest)
 		{
-			var bill = _billService.UpdateBill(billId, updateRequest.ToBill());
+			var bill = updateRequest.ToBill();
+			var updated = await _billService.UpdateBillAsync(bill);
 
-			if (bill != null)
-				return Ok(bill.ToBillResponse());
+			if (!updated)
+				return NotFound();
 
-			return NotFound();
+			return Ok(bill.ToBillResponse());
 		}
 
 		[HttpDelete(ApiRoutes.Bills.DeleteBill)]
-		public IActionResult Delete([FromRoute] Guid billId)
+		public async Task<IActionResult> Delete([FromRoute] Guid billId)
 		{
-			var deleted = _billService.DeleteBill(billId);
+			var deleted = await _billService.DeleteBillAsync(billId);
 
-			if (deleted)
-				return NoContent();
+			if (!deleted)
+				return NotFound();
 
-			return NotFound();
+			return NoContent();
 		}
 
 		[HttpGet(ApiRoutes.Bills.GetBillDocument)]
-		public IActionResult GetBillDocument([FromRoute] Guid billId)
+		public async Task<IActionResult> GetBillDocument([FromRoute] Guid billId)
 		{
-			var document = _billService.GetBillDocument(billId);
+			var document = await _billService.GetBillDocumentAsync(billId);
 
 			if (document == null)
 				return NotFound();

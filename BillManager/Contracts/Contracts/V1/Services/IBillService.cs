@@ -1,18 +1,18 @@
-﻿using Contracts.Contracts.Requests;
-using Contracts.Domain;
+﻿using Contracts.Domain;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contracts.Contracts
 {
 	public interface IBillService
 	{
-		IEnumerable<Bill> GetBills(string name = "", string vendor = "");
-		Bill GetBill(Guid billId);
-		Bill AddBill(Bill bill);
-		Bill UpdateBill(Guid billId, Bill bill);
-		bool DeleteBill(Guid billId);
-		byte[] GetBillDocument(Guid billId);
+		Task<IEnumerable<Bill>> GetBillsAsync(string name = "", string vendor = "");
+		Task<Bill> GetBillAsync(Guid billId);
+		Task<bool> AddBillAsync(Bill bill);
+		Task<bool> UpdateBillAsync(Bill bill);
+		Task<bool> DeleteBillAsync(Guid billId);
+		Task<byte[]> GetBillDocumentAsync(Guid billId);
 		void ConvertDoc();
 		
 	}

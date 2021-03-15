@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Contracts.Domain
 {
 	public class Bill
 	{
+		[Key]
 		public Guid Id { get; set; }
 		public string Name { get; set; }
 		public string Vendor { get; set; }

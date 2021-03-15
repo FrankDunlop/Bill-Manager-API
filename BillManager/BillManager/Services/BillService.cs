@@ -1,7 +1,9 @@
-﻿using Contracts.Contracts;
+﻿using BillManager.Data;
+using Contracts.Contracts;
 using Contracts.Contracts.Requests;
 using Contracts.Domain;
 using Contracts.Domain.Extensions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,75 +14,66 @@ namespace BillManager.Services
 {
 	public class BillService : IBillService
 	{
-		public List<Bill> bills;
+		private readonly DataContext _dataContext;
 
-		public BillService()
+		public BillService(DataContext dataContext)
 		{
-			bills = new List<Bill>(){
-				new Bill { Id = Guid.NewGuid(), Name = "Electric", Vendor = "Eirtricity" },
-				new Bill { Id = Guid.NewGuid(), Name = "Phone", Vendor = "Vodafone" }
-			};
+			_dataContext = dataContext;
 		}
-		public IEnumerable<Bill> GetBills(string name = "", string vendor = "")
+		public async Task<IEnumerable<Bill>> GetBillsAsync(string name = "", string vendor = "")
 		{
 			if (name.Equals(string.Empty) && vendor.Equals(string.Empty))
-				return bills;
+				return await _dataContext.Bills.ToListAsync();
 
 			if (!name.Equals(string.Empty))
 			{
-				return bills.Where(b => b.Name.Equals(name));
+				return await _dataContext.Bills
+					.Where(b => b.Name.Equals(name))
+					.ToListAsync();
 			}
 			else
 			{
-				return bills.Where(b => b.Vendor.Equals(vendor));
+				return await _dataContext.Bills
+					.Where(b => b.Vendor.Equals(vendor))
+					.ToListAsync();
 			}
 		}
 
-		public Bill GetBill(Guid billId)
+		public async Task<Bill> GetBillAsync(Guid billId)
 		{
-			var bill = bills.SingleOrDefault(x => x.Id == billId);
-			return bill;
+			return await _dataContext.Bills.SingleOrDefaultAsync(x => x.Id == billId);
 		}
 
-		public Bill AddBill(Bill bill)
+		public async Task<bool> AddBillAsync(Bill bill)
 		{
-			bills.Add(bill);
-
-			//will change bill domain object to billDto to save
-
-			return bill;
+			_dataContext.Bills.AddAsync(bill);
+			var created = await _dataContext.SaveChangesAsync();
+			return created > 0;
 		}
 
-		public Bill UpdateBill(Guid billId, Bill bill)
+		public async Task<bool> UpdateBillAsync(Bill bill)
 		{
-			var exists = GetBill(billId) != null;
-
-			if (!exists)
-				return null;
-
-			//will change bill domain object to billDto to save
-
-			var index = bills.FindIndex(x => x.Id == billId);
-			bills[index].IsPaid = bill.IsPaid;
-			bills[index].PaidDate = bill.PaidDate;
-
-			return bills[index];
+			_dataContext.Bills.Update(bill);
+			var updated = await _dataContext.SaveChangesAsync();
+			return updated > 0;
 		}
 
-		public bool DeleteBill(Guid billId)
+		public async Task<bool> DeleteBillAsync(Guid billId)
 		{
-			var bill = GetBill(billId);
+			var bill = await GetBillAsync(billId);
 
 			if (bill == null)
 				return false;
 
-			bills.Remove(bills.SingleOrDefault(x => x.Id == billId));
-			return true;
+			_dataContext.Bills.Remove(bill);
+			var deleted = await _dataContext.SaveChangesAsync();
+			return deleted > 0;
 		}
 
-		public byte[] GetBillDocument(Guid billId)
+		public async Task<byte[]> GetBillDocumentAsync(Guid billId)
 		{
-			return bills.SingleOrDefault(x => x.Id == billId).Document;
+			var bill = await _dataContext.Bills.SingleOrDefaultAsync(x => x.Id == billId);
+			return bill.Document;
 		}
 
 		public void ConvertDoc()

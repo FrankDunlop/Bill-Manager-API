@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Contracts.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BillManager.Data
@@ -9,5 +10,7 @@ namespace BillManager.Data
 			: base(options)
 		{
 		}
+
+		public DbSet<Bill> Bills { get; set; }
 	}
 }
