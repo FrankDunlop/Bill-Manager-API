@@ -17,5 +17,6 @@ namespace Contracts.Contracts.Requests
 		public DateTime? PeriodFrom { get; set; }
 		public DateTime? PeriodTo { get; set; }
 		public double? Price { get; set; }
+		public string Notes { get; set; }
 	}
 }

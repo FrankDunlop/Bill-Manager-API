@@ -118,6 +118,8 @@
     <Compile Include="Contracts\V1\Requests\Extensions\UpdateRequestExtensions.cs" />
     <Compile Include="Contracts\V1\Requests\UpdateBillRequest.cs" />
     <Compile Include="Contracts\V1\Responses\BillResponse.cs" />
+    <Compile Include="Contracts\V1\Responses\ErrorModel.cs" />
+    <Compile Include="Contracts\V1\Responses\ErrorResponse.cs" />
     <Compile Include="Domain\BillDto.cs" />
     <Compile Include="Contracts\V1\Services\IBillService.cs" />
     <Compile Include="Domain\Bill.cs" />

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using BillManager.Filters;
+using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,9 @@ namespace BillManager.Installers
 			{
 				x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Bill Manager API", Version = "v1" });
 			});
+
+			services.AddMvc(options => options.Filters.Add<ValidationFilter>())
+				.AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
 		}
 	}
 }
